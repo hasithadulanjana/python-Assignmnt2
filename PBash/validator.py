@@ -55,7 +55,7 @@ class IEmployeeInfo(metaclass=ABCMeta):
         pass
 
 
-class Validator(IFileValidator):
+class Validator(IFileValidator, IEmployeeInfo):
 
     # Tim
     def __init__(self):
