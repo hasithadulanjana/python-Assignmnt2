@@ -17,11 +17,8 @@ class CommandHelp(cmd.Cmd):
 
     # Rosemary
     def help_quit(self):
-        result = self.file_handler.open_help("quit")
-        if result == "No such command.":
-            print("Could not find entry in help file")
-        else:
-            print(result)
+        if self.print_message:
+            return print("Could not find entry in help file")
 
     # Tim
     def do_open(self, arg):
@@ -31,24 +28,25 @@ class CommandHelp(cmd.Cmd):
 
     # Tim
     def help_open(self):
-        result = self.file_handler.open_help("open")
-        if result == "No such command.":
-            print("Could not find entry in help file")
-        else:
-            print(result)
+        if self.print_message:
+            return print("Could not find entry in help file")
 
   # Tim
     def do_reload(self, arg):
         self.db.load()
         self.file_handler.set_rules()
 
+    def print_message(self):
+         result = self.file_handler.open_help("quit")
+         result = self.file_handler.open_help("reload")
+         result = self.file_handler.open_help("open")
+         return result == "No such Command"
+
     # Hasitha
     def help_reload(self):
-        result = self.file_handler.open_help("reload")
-        if result == "No such command.":
-            print("Could not find entry in help file")
-        else:
-            print(result)
+        if self.print_message:
+            return print("Could not find entry in help file")
+
 
 class CommandBar(cmd.Cmd):
     # Tim
