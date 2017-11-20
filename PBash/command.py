@@ -3,7 +3,7 @@ import sys
 
 
 # noinspection PyUnusedLocal
-class Command(cmd.Cmd):
+class CommandHelp(cmd.Cmd):
     def __init__(self, new_file_handler, new_db, new_view):
         cmd.Cmd.__init__(self)
         self.prompt = "> "
@@ -21,7 +21,7 @@ class Command(cmd.Cmd):
         if result == "No such command.":
             print("Could not find entry in help file")
         else:
-           return print("No such command.")
+            print(result)
 
     # Tim
     def do_open(self, arg):
@@ -37,6 +37,20 @@ class Command(cmd.Cmd):
         else:
             print(result)
 
+  # Tim
+    def do_reload(self, arg):
+        self.db.load()
+        self.file_handler.set_rules()
+
+    # Hasitha
+    def help_reload(self):
+        result = self.file_handler.open_help("reload")
+        if result == "No such command.":
+            print("Could not find entry in help file")
+        else:
+            print(result)
+
+class CommandBar(cmd.Cmd):
     # Tim
     def do_bar(self, arg):
         arg = arg.upper()
@@ -60,6 +74,7 @@ class Command(cmd.Cmd):
         else:
             print(result)
 
+class CommandPie(cmd.Cmd):
     # Tim
     def do_pie(self, arg):
         arg = arg.upper()
@@ -79,6 +94,8 @@ class Command(cmd.Cmd):
         else:
             print(result)
 
+
+class CommandLine(cmd.Cmd):
     # Hasitha
     def do_line(self, arg):
         sales = self.db.get_data("SALES")
@@ -108,18 +125,20 @@ class Command(cmd.Cmd):
         else:
             print(result)
 
+class CommandScatter(cmd.Cmd):
     # Tim
     def do_scatter(self, arg):
         arg = arg.upper()
         if arg == "SALARY":
             salary = self.db.get_data("SALARY")
             age = self.db.get_data("AGE")
-            return (self.view.age_salary(age, salary))
-        if arg == "SALES":
+            self.view.age_salary(age, salary)
+        elif arg == "SALES":
             sales = self.db.get_data("SALES")
             age = self.db.get_data("AGE")
-            return (self.view.pygal_line_salebased(sales, age))
-        return print('The valid options for a scatter graph are salary or sales')
+            self.view.pygal_line_salebased(sales, age)
+        else:
+            print('The valid options for a scatter graph are salary or sales')
 
     #Rosemary
     def help_scatter(self):
@@ -129,15 +148,4 @@ class Command(cmd.Cmd):
         else:
             print(result)
 
-    # Tim
-    def do_reload(self, arg):
-        self.db.load()
-        self.file_handler.set_rules()
 
-    # Hasitha
-    def help_reload(self):
-        result = self.file_handler.open_help("reload")
-        if result == "No such command.":
-            print("Could not find entry in help file")
-        else:
-            print(result)
